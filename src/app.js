@@ -26,6 +26,7 @@ app.use(usersRoutes);
 
 
 
+
 // DB SETUP
 app.get("/health", (req, res) => {
     res.send("LifeMark Server is running...");

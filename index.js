@@ -29,35 +29,177 @@ async function run() {
         // await client.connect();
 
         const userCollection = client.db("LifeMark").collection("users")
+        const appointmentCollection = client.db('LifeMark').collection('appointments')
+        const testResultCollection = client.db('LifeMark').collection('test-results')
+        const bannerCollection = client.db('LifeMark').collection('banners')
+        const healthRecommendationsCollection = client.db('LifeMark').collection('healthRecommendations')
+        const testCollection = client.db('LifeMark').collection('tests')
 
 
         //---------------------- User Profile ----------------------//
-        app.post('/user', async(req, res) => {
-            const user = req.body()
+        //---------------------- User Profile ----------------------//
+        //---------------------- User Profile ----------------------//
+        //---------------------- User Profile ----------------------//
+
+
+        // ---- Create An User ----
+        app.post('/user', async (req, res) => {
+            const user = req.body
             const result = await userCollection.insertOne(user)
             res.send(result);
         })
 
-        app.get('/user', async(req, res) => {
+        // ---- Get All The Users ----
+        app.get('/user', async (req, res) => {
             const result = await userCollection.find().toArray()
             res.send(result);
         })
 
-        app.get('/user/:id', async(req, res) => {
-            try{
+        // ---- Get One User By ID ----
+        app.get('/user/:id', async (req, res) => {
+            try {
                 const id = req.params.id
                 const query = {
-                    _id : new ObjectId(id), 
+                    _id: new ObjectId(id),
                 }
                 const result = await userCollection.findOne(query)
                 console.log(result);
-                if(!result){
+                if (!result) {
                     res.status(404).send('Item Not Found')
                     return;
                 }
                 res.send(result);
-            }catch{
+            } catch {
                 console.error("Error:");
+                res.status(500).send('Internal Server Error')
+            }
+        })
+
+        // ---- Update A User By ID ----
+        app.put('/user/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await userCollection.updateOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result);
+            }
+            catch {
+                console.error("Error : ");
+                res.status(500).send('Internal Server Error')
+            }
+        })
+
+        //------------------ Appointment Section ------------------//
+        //------------------ Appointment Section ------------------//
+        //------------------ Appointment Section ------------------//
+        //------------------ Appointment Section ------------------//
+
+        // ---- All Appointment ----
+        app.get('/appointment', async (req, res) => {
+            const result = await appointmentCollection.find().toArray()
+            res.send(result)
+        })
+
+        // ---- Appointments Of an User Query Mail ----
+        app.get('/appointment/:userEmail', async (req, res) => {
+            try {
+                const userEmail = req.params.userEmail;
+                const query = {
+                    userEmail: userEmail,
+                };
+                const result = await appointmentCollection.find(query).toArray();
+                console.log(result);
+                if (!result) {
+                    res.status(404).send('Item not found');
+                    return;
+                }
+                res.send(result)
+            }
+            catch {
+                console.error('Error:');
+                res.status(500).send('Internal Server Error');
+            }
+        })
+
+        // ---- Single Appointment By Id ----
+        app.get('/appointment/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await appointmentCollection.findOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result);
+            }
+            catch {
+                console.error('Error:');
+                res.status(500).send('Internal Server Error');
+            }
+        })
+
+        // ---- Single Appointment Edit Using In ----
+        app.put('/appointment/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await appointmentCollection.updateOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result);
+            }
+            catch {
+                console.error('Error :');
+                res.status(500).send('Internal Server Error')
+            }
+        })
+
+        //---------------------- Test Results ----------------------//
+        //---------------------- Test Results ----------------------//
+        //---------------------- Test Results ----------------------//
+        //---------------------- Test Results ----------------------//
+
+        // ---- Posting A test Result ----        
+        app.post('/test-result', async (req, res) => {
+            const testResult = req.body
+            const result = await testResultCollection.insertOne(testResult)
+            res.send(result)
+        })
+
+        // ---- Test Result List ----
+        app.get('/test-result', async (req, res) => {
+            const result = await testResultCollection.find().toArray()
+            res.send(result)
+        })
+
+        app.get('/test-result/:id', async (req, res) => {
+            try {
+                const userEmail = req.params.userEmail;
+                const query = {
+                    userEmail: userEmail,
+                };
+                const result = await testResultCollection.findOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return
+                }
+                res.send(result)
+            }
+            catch {
+                console.error("Error :");
                 res.status(500).send('Internal Server Error')
             }
         })
@@ -71,9 +213,179 @@ async function run() {
 
 
 
+
+
+
+
+
+
+
+
+
+        //---------------------- Admin ----------------------//
+        //---------------------- Admin ----------------------//
+        //---------------------- Admin ----------------------//
+        //---------------------- Admin ----------------------//
+
+        // ---- Banner Create ----
+        app.post('/banners', async (req, res) => {
+            const banner = req.body
+            const result = await bannerCollection.insertOne(banner)
+            res.send(result)
+        })
+
+        // ---- Banner List ----
+        app.get('/banners', async (req, res) => {
+            const result = await bannerCollection.find().toArray()
+            res.send(result)
+        })
+
+        // ---- Single Banner Using Id ----
+        app.get('/banners/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await bannerCollection.findOne(query)
+
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result)
+            }
+            catch {
+                console.error("Error :");
+                res.status(500).send("Internal Server Error")
+            }
+        })
+
+        // ---- Banner Status Update API ----
+        app.put('/banner/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await bannerCollection.updateOne(query)
+
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result)
+            }
+            catch {
+                console.error("Error: ");
+                res.status(500).send('Internal Server Error')
+            }
+        })
+
+        // ---- Delete A Banner ----
+        app.delete('/banner/:id', async (req, res) => {
+            const id = req.params.id
+            const query = {
+                _id: new ObjectId(id)
+            }
+            const result = bannerCollection.deleteOne(query)
+            res.send(result)
+        })
+
+        // ---- Health Recommendations ----
+        app.get('/health-recommendations', async (req, res) => {
+            const result = healthRecommendationsCollection.find().toArray()
+            res.send(result)
+        })
+
+
+        //---------------------- Tests ----------------------//
+        //---------------------- Tests ----------------------//
+        //---------------------- Tests ----------------------//
+        //---------------------- Tests ----------------------//
+
+        // ---- Posting A test ----
+        app.post('/tests', async (req, res) => {
+            const test = req.body
+            const result = await testCollection.insertOne(test)
+            res.send(result)
+        })
+
+        // ---- Test List ----
+        app.get('/tests', async (req, res) => {
+            const result = await testCollection.find().toArray()
+            res.send(result)
+        })
+
+        // ---- Test By Id ----
+        app.get('/tests/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await testCollection.findOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return;
+                }
+                res.send(result)
+            }
+            catch {
+                console.error("Error: ");
+                res.status(500).send('Internal Server Error')
+            }
+        })
+
+        // ---- Update A Test ----
+        app.put('/tests/:id', async (req, res) => {
+            try {
+                const id = req.param.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = await testCollection.updateOne(query)
+                if (!result) {
+                    res.status(404).send('Item Not Found')
+                    return
+                }
+                res.send(result)
+            }
+            catch {
+                console.error("Error: ");
+                res.status(500).send("Internal Server Error")
+            }
+        })
+
+        // ---- Delete A Test ----
+        app.delete('/tests/:id', async (req, res) => {
+            try {
+                const id = req.params.id
+                const query = {
+                    _id: new ObjectId(id)
+                }
+                const result = testCollection.deleteOne(query)
+                res.send(result)
+            }
+            catch {
+                console.error("Error :");
+                res.status(500).send("Internal Server Error")
+            }
+        })
+
+        app.get('/tests', async (req, res) => {
+            // const result = 
+        })
+
+
+
+
+
+
+
         // Send a ping to confirm a successful connection
-        await client.db("admin").command({ ping: 1 });
-        console.log("Pinged your deployment. You successfully connected to MongoDB!");
+        // await client.db("admin").command({ ping: 1 });
+        // console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
         // await client.close();
