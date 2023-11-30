@@ -82,7 +82,7 @@ app.patch('/user/:email', async (req, res) => {
 // ---- Banner Create ----
 app.post('/banners', async (req, res) => {
     const banner = req.body
-    const result = await Banner.insertOne(banner)
+    const result = await Banner.create(banner)
     res.send(result)
 })
 
@@ -160,13 +160,19 @@ app.post('/tests', async (req, res) => {
     try{
         const test = req.body
         console.log(test);
-        const result = await Test.insertOne(test)
+        const result = await Test.create(test)
         res.send(result)
     }
     catch(err){
         console.log(err);
     }
 })
+// const testResultCollection = client.db('LifeMark').collection('test-results')
+// app.post('/tests', async (req, res) => {
+//     const test = req.body
+//     const result = await testCollection.insertOne(test)
+//     res.send(result)
+// })
 
 // ---- Test List ----
 app.get('/tests', async (req, res) => {
