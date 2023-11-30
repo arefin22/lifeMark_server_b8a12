@@ -28,7 +28,7 @@ app.post('/user', async (req, res) => {
     if (existingUser) {
         return res.send(console.log("User Exist"))
     }
-    const result = await User.insertOne(user)
+    const result = await User.create(user)
     res.send(result);
 })
 app.get('/user', async (req, res) => {
@@ -113,7 +113,7 @@ app.get('/banners/:id', async (req, res) => {
 })
 
 // ---- Banner Status Update API ----
-app.put('/banner/:id', async (req, res) => {
+app.put('/banners/:id', async (req, res) => {
     try {
         const id = req.params.id
         const query = {
@@ -134,7 +134,7 @@ app.put('/banner/:id', async (req, res) => {
 })
 
 // ---- Delete A Banner ----
-app.delete('/banner/:id', async (req, res) => {
+app.delete('/banners/:id', async (req, res) => {
     const id = req.params.id
     // const query = {
     //     _id: new ObjectId(id)
@@ -254,6 +254,12 @@ app.get('/tests', async (req, res) => {
 //------------------ Appointment Section ------------------//
 //------------------ Appointment Section ------------------//
 //------------------ Appointment Section ------------------//
+
+app.post('/appointment', async (req, res) => {
+    const data = req.body
+    const result = await Appointment.create(data)
+    res.send(result)
+})
 
 // ---- All Appointment ----
 app.get('/appointment', async (req, res) => {
