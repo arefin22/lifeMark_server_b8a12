@@ -1,9 +1,10 @@
 var express = require('express');
 const User = require('../../models/User');
-const { findAll } = require('../../api/users');
+const { findAll, postOneUser } = require('../../api/users');
 var router = express.Router()
 
 router.get('/user', findAll)
+// router.post('/user', postOneUser)
 
 
 

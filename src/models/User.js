@@ -2,10 +2,6 @@ const { Schema, default: mongoose } = require('mongoose')
 
 
 const UserSchema = new Schema({
-    user_id: {
-        type : Number,
-        required : true
-    },
     name: {
         type:String,
         required :true
@@ -18,7 +14,7 @@ const UserSchema = new Schema({
         type:String,
         required: true
     },
-    blood_group:{
+    bloodGroup:{
         type: String,
         required:true
     },
@@ -27,10 +23,6 @@ const UserSchema = new Schema({
         required:true
     },
     upazila:{
-        type:String,
-        required:true
-    },
-    password:{
         type:String,
         required:true
     },

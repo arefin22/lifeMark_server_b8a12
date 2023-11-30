@@ -19,10 +19,14 @@ const getConnectionString = () => {
 }
 
 const connectDB = async() => {
-    console.log('Connecting To Database...');
-    const uri = getConnectionString()
-    await mongoose.connect(uri, {dbName:process.env.DB_NAME})
-    console.log("Connected To Database");
+    try{
+        console.log('Connecting To Database...');
+        const uri = getConnectionString()
+        await mongoose.connect(uri, {dbName:process.env.DB_NAME})
+        console.log("Connected To Database");
+    }catch(err){
+        console.log(err);
+    }
 }
 
 module.exports = Object.freeze(connectDB)
